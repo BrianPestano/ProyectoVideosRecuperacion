@@ -1,8 +1,6 @@
 package com.example.proyectovideosrecuperacion.PantallaPrincipal
 
 import android.annotation.SuppressLint
-import android.net.Uri
-import android.widget.VideoView
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -19,7 +17,6 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Card
-import androidx.compose.material3.Checkbox
 import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
@@ -27,7 +24,6 @@ import androidx.compose.material3.SearchBar
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
@@ -36,13 +32,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.viewinterop.AndroidView
 import androidx.navigation.NavHostController
-import com.example.proyectovideosrecuperacion.BBDD.BBDD
-import com.example.proyectovideosrecuperacion.BBDD.Video
-import com.example.proyectovideosrecuperacion.R
 import com.example.proyectovideosrecuperacion.Videojuego.infoArray
-
 
 @SuppressLint("UnrememberedMutableState")
 @OptIn(ExperimentalMaterial3Api::class)
@@ -55,9 +46,9 @@ fun pantallaInicio(navController: NavHostController) {
     var menuDesplegado by remember { mutableStateOf(false) }
     var VJSeleccionado by remember { mutableStateOf(mutableSetOf<String>()) }
 
+    //variable para el filtrado
     val juegos = listOf("KH1", "KH2", "KH365", "KHBS", "KH3")
 
-    // Columna principal
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -82,7 +73,7 @@ fun pantallaInicio(navController: NavHostController) {
             active = menuDesplegado,
             onActiveChange = { menuDesplegado = !menuDesplegado }
         ) {
-            // Crear elementos de menú desplegable
+            // Aqui se crean los elementos del menu desplegable
             juegos.forEach { juego ->
                 if (juego.startsWith(buscador, ignoreCase = true)) {
                     DropdownMenuItem(
@@ -97,7 +88,7 @@ fun pantallaInicio(navController: NavHostController) {
             }
         }
 
-        // Mostrar lista de videojuegos según la plataforma seleccionada
+        // Mostrar lista de juegos según el juego seleccionado
         if (seleccionJuego != null) {
             LazyColumn(
                 modifier = Modifier
@@ -105,7 +96,7 @@ fun pantallaInicio(navController: NavHostController) {
                     .weight(1f)
             ) {
                 items(lista.filter { it.juegos.contains(seleccionJuego!!, ignoreCase = true) }) { videojuego ->
-                    // Llamar a la función PlataformaItem para cada elemento de la lista
+                    //Llamamos a la función PlataformaItem para cada elemento de la lista
                     PlataformaItem(
                         plataforma = videojuego,
                         isChecked = videojuego.nombre in VJSeleccionado,
@@ -129,7 +120,7 @@ fun pantallaInicio(navController: NavHostController) {
                     .weight(1f)
             ) {
                 items(lista) { videojuego ->
-                    // Llamar a la función PlataformaItem para cada elemento de la lista
+                    //Llamamos a la función PlataformaItem para cada elemento de la lista
                     PlataformaItem(
                         plataforma = videojuego,
                         isChecked = videojuego.nombre in VJSeleccionado,
@@ -142,7 +133,6 @@ fun pantallaInicio(navController: NavHostController) {
                         },
                         onClick = {
                             navController.navigate("pantallaVideos/${videojuego.nombre}")
-                            /*/${videojuego.nombre}*/
                         }
                     )
                 }
@@ -159,7 +149,7 @@ fun PlataformaItem(
     onClick: (Int) -> Unit
 ) {
 
-    // Card que contiene la información de un videojuego
+    // Card que contiene la información de un juego(lo que se ve en el Inicio, la tarjetita esa)
     Card(
         modifier = Modifier
             .fillMaxWidth()
@@ -169,7 +159,7 @@ fun PlataformaItem(
             },
         shape = RoundedCornerShape(8.dp)
     ) {
-        // Row que contiene la información y la checkbox
+        //Row que contiene la información
         Row(
             modifier = Modifier
                 .fillMaxWidth()
@@ -177,13 +167,13 @@ fun PlataformaItem(
             horizontalArrangement = Arrangement.SpaceBetween,
             verticalAlignment = Alignment.CenterVertically
         ) {
-            // Sección de la imagen y el nombre del videojuego
+            //Sección de la imagen y el nombre del juego
             Row(
                 verticalAlignment = Alignment.CenterVertically,
                 modifier = Modifier
                     .weight(1f)
             ) {
-                // Imagen del videojuego
+                //Imagen del juego
                 Image(
                     painter = painterResource(id = plataforma.imagenes),
                     contentDescription = null,
@@ -196,10 +186,9 @@ fun PlataformaItem(
                 // Separador
                 Spacer(modifier = Modifier.width(16.dp))
 
-                // Nombre del videojuego
+                // Nombre del juego
                 Text(text = plataforma.nombre, style = MaterialTheme.typography.titleMedium)
             }
-
             // Separador
             Spacer(modifier = Modifier.width(16.dp))
         }

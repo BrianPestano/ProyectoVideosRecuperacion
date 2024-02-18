@@ -4,6 +4,7 @@ import androidx.compose.runtime.mutableStateListOf
 import com.example.proyectovideosrecuperacion.R
 import com.example.proyectovideosrecuperacion.Videojuego.infoArray
 
+//Lista donde le pasamos el nombre, imagen, juego para filtrar y video, esto es para el menu de inicio
 var lista = mutableStateListOf(
     infoArray("Kingdom Hearts 1 - Talaska Black x Leg Day", R.drawable.kingdomhearts, "KH1", R.raw.kingdomheartstaskablackxlegday),
     infoArray("Kingdom Hearts 2 - Save Me Skrillex", R.drawable.kingdomhearts2, "KH2", R.raw.kingdomheartsintheend),

@@ -17,6 +17,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
+import com.example.proyectovideosrecuperacion.BBDD.Video
 import com.example.proyectovideosrecuperacion.PantallaPrincipal.pantallaInicio
 import com.example.proyectovideosrecuperacion.PantallaVideo.pantallaVideos
 import com.example.proyectovideosrecuperacion.ui.theme.ProyectoVideosRecuperacionTheme
@@ -52,7 +53,7 @@ fun SetupNavigation(navController: NavHostController) {
             arguments = listOf(navArgument("nombre") { type = NavType.StringType })
         ) { backStackEntry ->
             val nombre = backStackEntry.arguments?.getString("nombre")
-            pantallaVideos(navController, ExoPlayer = viewModel(), nombre)
+            pantallaVideos(navController, exoPlayer = viewModel(), nombre)
         }
     }
 }
