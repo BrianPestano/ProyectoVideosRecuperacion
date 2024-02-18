@@ -2,13 +2,23 @@ package com.example.proyectovideosrecuperacion.PantallaVideo
 
 import android.net.Uri
 import android.util.Log
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
+import androidx.compose.material.icons.filled.Pause
+import androidx.compose.material.icons.filled.PlayArrow
+import androidx.compose.material.icons.filled.Repeat
+import androidx.compose.material.icons.filled.RepeatOne
+import androidx.compose.material.icons.filled.Replay
+import androidx.compose.material.icons.filled.Shuffle
+import androidx.compose.material.icons.filled.SkipNext
+import androidx.compose.material.icons.filled.SkipPrevious
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -43,6 +53,8 @@ fun pantallaVideos(navController: NavHostController, exoPlayer: PrincipalViewMod
     var isPlaying by remember { mutableStateOf(false) }
     var isTextVisible by remember { mutableStateOf(true) }
     val obtenerIndice = obtenerVideo(nombre)
+    var isRandomMode by remember { mutableStateOf(false) }
+    var isLoopMode by remember { mutableStateOf(false) }
     val currentSongIndex by exoPlayer.currentVideoIndex.collectAsState(obtenerIndice)
 
     //El DisposableEffect se utiliza para realizar acciones cuando currentSongIndex cambia.
@@ -104,6 +116,53 @@ fun pantallaVideos(navController: NavHostController, exoPlayer: PrincipalViewMod
                         .clip(MaterialTheme.shapes.medium)
                         .padding(vertical = 16.dp),
                 )
+
+                // Botones de acción: pausa, bucle y random (NO FUNCIONALES, SIMPLE DECORACIÓN)
+                Row(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(vertical = 16.dp),
+                    horizontalArrangement = Arrangement.SpaceEvenly
+                ) {
+                    IconButton(
+                        onClick = {
+                            isRandomMode = !isRandomMode
+                        }
+                    ) {
+                        val icon = if (isRandomMode) {
+                            Icons.Default.Replay
+                        } else {
+                            Icons.Default.Shuffle
+                        }
+                        Icon(imageVector = icon, contentDescription = null)
+                    }
+
+                    IconButton(
+                        onClick = {
+                            isPlaying = !isPlaying
+                        }
+                    ) {
+                        val icon = if (isPlaying) {
+                            Icons.Default.Pause
+                        } else {
+                            Icons.Default.PlayArrow
+                        }
+                        Icon(imageVector = icon, contentDescription = null)
+                    }
+
+                    IconButton(
+                        onClick = {
+                            isLoopMode = !isLoopMode
+                        }
+                    ) {
+                        val icon = if (isLoopMode) {
+                            Icons.Default.RepeatOne
+                        } else {
+                            Icons.Default.Repeat
+                        }
+                        Icon(imageVector = icon, contentDescription = null)
+                    }
+                }
             }
         }
     )
